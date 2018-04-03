@@ -638,15 +638,27 @@ xsetsel(char *str)
 void
 brelease(XEvent *e)
 {
+	pid_t child;
+
 	if (IS_SET(MODE_MOUSE) && !(e->xbutton.state & forceselmod)) {
 		mousereport(e);
 		return;
 	}
 
-	if (e->xbutton.button == Button2)
+	if (e->xbutton.button == Button2) {
 		selpaste(NULL);
-	else if (e->xbutton.button == Button1)
+        } else if (e->xbutton.button == Button1) {
 		mousesel(e, 1);
+        } else if (e->xbutton.button == Button3) {
+		switch (child = fork()) {
+			case -1:
+				return;
+			case 0:
+				execvp(plumber, (char *const []){ plumber, getsel(), 0 });
+				exit(127);
+				return;
+		}
+        }
 }
 
 void
