@@ -647,9 +647,9 @@ brelease(XEvent *e)
 
 	if (e->xbutton.button == Button2) {
 		selpaste(NULL);
-        } else if (e->xbutton.button == Button1) {
+	} else if (e->xbutton.button == Button1) {
 		mousesel(e, 1);
-        } else if (e->xbutton.button == Button3) {
+	} else if (e->xbutton.button == Button3) {
 		switch (child = fork()) {
 			case -1:
 				return;
